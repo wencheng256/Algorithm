@@ -1,10 +1,105 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>middle</title>
+
+    <link rel="stylesheet"  href="../common/c.css"/>
 </head>
 <body>
+    <div class="content">
+        <div class="graph">
+            <!--<div class="bar"><div class="bar_body deep_gray"><div class="bar_head blue"></div></div></div>-->
+        </div>
+        <div class="form">
+            数据：<input type="text" id="data" /> <input type="button" value="Go" onclick="go()"/><i class="remark">请输入100以内的整数数组，以英文,分割</i><input type="button" value="Shuffle" onclick="shuffle()"/>
+        </div>
+    </div>
+    <script src="../common/jquery.min.js"></script>
+    <script src="../common/layer/layer.js"></script>
+    <script src="../common/animatequeue.js"></script>
+    <script>
+        var dataarr;
+        var dataGraph = [];
+        var queue;
+        function go(){
+            queue = new AnimateQueue();
+            $(".graph").text("");
+            var data = $("#data").val();
+            dataarr = data.split(",");
+            for(var i = 0; i<dataarr.length; i++){
+                var ele = createElement(dataarr[i]);
+                dataGraph.push(ele);
+                $(".graph").append(ele);
+            }
 
+            var middle = parseInt((ata.length+2-1)/2);
+            msg("中位数为第"+middle+"元素");
+            getIndex(dataarr, middle, 0, dataarr.length);
+        }
+        function swapGraph(from, to){
+            queue.add(function(){
+                var fromGraph = dataGraph[from];
+                var toGraph = dataGraph[to];
+
+                change(fromGraph, "red");
+                change(toGraph, "red");
+
+                setTimeout(function(){
+                    doswapGraph(fromGraph, toGraph);
+                    change(fromGraph, "blue");
+                    change(toGraph, "blue");
+                }, 1000)
+            }, 2000)
+        }
+        function start_animate(result){
+            var resultGraph = dataGraph[result];
+            queue.add(function(){
+                change(resultGraph, "yellow")
+            }, 2000);
+            queue.start();
+        }
+
+        function createElement(height){
+            var element = $("<div class=\"bar\"><div class=\"bar_body deep_gray\"><div class=\"bar_head blue\"></div></div></div>");
+            element.find(".bar_body").attr("style", "height:"+height+"%;");
+            return element;
+        }
+        function change(ele, color){
+            ele.find(".bar_head").attr("class", "bar_head");
+            ele.find(".bar_head").addClass(color);
+        }
+        function doswapGraph(from, to){
+            var temp = from.find(".bar_body").attr("style");
+            from.find(".bar_body").attr("style", to.find(".bar_body").attr("style"));
+            to.find(".bar_body").attr("style", temp);
+        }
+        function compare(from, to){
+            queue.add(function(){
+                var fromGraph = dataGraph[from];
+                var toGraph = dataGraph[to];
+
+                change(fromGraph, "green");
+                change(toGraph, "green");
+
+                setTimeout(function(){
+                    change(fromGraph, "blue");
+                    change(toGraph, "blue");
+                }, 1000)
+            }, 1500)
+        }
+        function shuffle(){
+            var data = $("#data").val();
+            var arr = data.split(",");
+            $("#data").val(arr.sort(function(a,b){ return Math.random()>.5 ? -1 : 1;}).join(","));
+        }
+        function msg(msg){
+            queue.add(function(){
+                layer.msg(msg, {"icon":1});
+            },1000)
+        }
+    </script>
+    <script src="middle.js"></script>
 </body>
 </html>

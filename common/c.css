@@ -1,0 +1,58 @@
+*{
+    margin:0;
+    padding: 0;
+}
+.content{
+    padding: 20px;
+    width:800px;
+    margin: 50px auto;
+    background: #efefef;
+    min-height: 600px;
+}
+.bar{
+    float: left;
+    margin: 5px;
+    height: 500px;
+    width: 20px;
+    position: relative;
+}
+.bar_body{
+    position: absolute;
+    width: 20px;
+    height: 500px;
+    bottom: 0;
+}
+.bar_head{
+    height: 20px;
+}
+.blue{
+    background: #2854d3;
+}
+.red{
+    background: #d32b5c;
+}
+.green{
+    background: #2dd320;
+}
+.yellow{
+     background: #d3d22c;
+}
+.deep_gray{
+    background: #888;
+}
+
+.light_gray{
+    background: #ccc;
+}
+.graph{
+    height: 500px;
+    width:100%;
+}
+.form{
+    height:80px;
+    margin-top:20px;
+}
+.remark{
+    color: #aaa;
+    font-size: 12px;
+}
