@@ -23,6 +23,10 @@
         var dataarr;
         var dataGraph = [];
         var queue;
+
+        /**
+         * 开始按钮事件
+         */
         function go(){
             queue = new AnimateQueue();
             $(".graph").text("");
@@ -34,10 +38,16 @@
                 $(".graph").append(ele);
             }
 
-            var middle = parseInt((ata.length+2-1)/2);
+            var middle = parseInt((dataarr.length+2-1)/2);
             msg("中位数为第"+middle+"元素");
             getIndex(dataarr, middle, 0, dataarr.length);
         }
+
+        /**
+         * 交换量元素
+         * @param from
+         * @param to
+         */
         function swapGraph(from, to){
             queue.add(function(){
                 var fromGraph = dataGraph[from];
@@ -53,6 +63,11 @@
                 }, 1000)
             }, 2000)
         }
+
+        /**
+         * 开始动画
+         * @param result
+         */
         function start_animate(result){
             var resultGraph = dataGraph[result];
             queue.add(function(){
@@ -61,20 +76,41 @@
             queue.start();
         }
 
+        /**
+         * 创建元素
+         * @param height
+         * @returns {*|jQuery|HTMLElement}
+         */
         function createElement(height){
             var element = $("<div class=\"bar\"><div class=\"bar_body deep_gray\"><div class=\"bar_head blue\"></div></div></div>");
             element.find(".bar_body").attr("style", "height:"+height+"%;");
             return element;
         }
+
+        /**
+         * 改变元素颜色
+         * @param ele
+         * @param color
+         */
         function change(ele, color){
             ele.find(".bar_head").attr("class", "bar_head");
             ele.find(".bar_head").addClass(color);
         }
+        /**
+         * 交换元素数据
+         * @param from
+         * @param to
+         */
         function doswapGraph(from, to){
             var temp = from.find(".bar_body").attr("style");
             from.find(".bar_body").attr("style", to.find(".bar_body").attr("style"));
             to.find(".bar_body").attr("style", temp);
         }
+        /**
+         * 比较元素
+         * @param from
+         * @param to
+         */
         function compare(from, to){
             queue.add(function(){
                 var fromGraph = dataGraph[from];
@@ -89,11 +125,18 @@
                 }, 1000)
             }, 1500)
         }
+        /**
+         * 打乱数据
+         */
         function shuffle(){
             var data = $("#data").val();
             var arr = data.split(",");
             $("#data").val(arr.sort(function(a,b){ return Math.random()>.5 ? -1 : 1;}).join(","));
         }
+        /**
+         * 输出信息
+         * @param msg
+         */
         function msg(msg){
             queue.add(function(){
                 layer.msg(msg, {"icon":1});
